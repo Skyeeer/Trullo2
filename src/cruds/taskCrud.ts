@@ -24,6 +24,15 @@ export const getAllTasks = async () => {
     return await Task.find().populate('assignedTo', 'username email');
 };
 
+//Get a task by ID
+export const getTaskById = async (taskId: string) => {
+    const task = await Task.findById(taskId).populate('assignedTo', 'username email');
+    if (!task) {
+        throw new Error('Task not found');
+    }
+    return task;
+}
+
 //Update task
 export const updateTask = async (taskId: string, updatedTaskData: Partial<{ title: string; description: string; status: string; assignedTo?: string | null }>) => {
     const task = await Task.findById(taskId);

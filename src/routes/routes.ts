@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { createUser, getAllUsers, deleteUserById, getUserById, loginUser, updateUser } from '../cruds/userCrud';
-import { createTask, updateTask, getAllTasks, deleteTask } from '../cruds/taskCrud';
+import { createTask, updateTask, getAllTasks, deleteTask, getTaskById } from '../cruds/taskCrud';
 
 const router = Router();
 
@@ -48,6 +48,18 @@ router.get('/tasks', async (req: Request, res: Response) => {
     } catch (error) {
         const err = error as Error;
         res.status(500).json({ error: err.message });
+    }
+})
+
+//Get task by ID
+router.get('/tasks/:taskId', async (req: Request, res: Response) => {
+    try {
+        const { taskId } = req.params;
+        const task = await getTaskById(taskId);
+        res.status(200).json(task);
+    } catch (error) {
+        const err = error as Error;
+        res.status(404).json({ error: err.message });
     }
 })
 
